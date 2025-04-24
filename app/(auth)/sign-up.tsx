@@ -8,7 +8,10 @@ import {createUser} from '../../lib/appwrite'
 
 const SignUp = () => {
 
+    const [showPassword, setShowPassword] = useState(true)
     const [repeatedPass, setRepeatedPass] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
 
     const [form, setForm] = useState({
             username : "",
@@ -16,8 +19,10 @@ const SignUp = () => {
             password:''
         })
 
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    
+    const capitalizeFirstLetter = (text: string) => {
+        if (!text) return '';
+        return text.charAt(0).toUpperCase() + text.slice(1);
+        };
 
     const submit = async () => {
         if (form.password !== repeatedPass) {  
@@ -43,7 +48,6 @@ const SignUp = () => {
         }
     }
 
-    const [showPassword, setShowPassword] = useState(true)
   return (
     <SafeAreaView className='bg-secondary h-full items-center'>
             <ScrollView contentContainerClassName='justify-center py-5 ' className='bg-primary w-[90%] mx-5 my-10 py-5 rounded-[35px]'>
@@ -57,7 +61,7 @@ const SignUp = () => {
                         <Text className='text-2xl w-full font-psemibold text-secondary'>Sign up to Penny-Wise</Text>
                     </View>
                     <View className='w-full items-center'>
-                        <TextInput value={form.username} onChangeText={(e)=>setForm({ ...form, username: e})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Username'/>
+                        <TextInput value={form.username} onChangeText={(e)=>setForm({ ...form, username: capitalizeFirstLetter(e)})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Username'/>
                     </View>
                     <View className='w-full items-center'>
                         <TextInput value={form.email} onChangeText={(e)=>setForm({ ...form, email: e})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Email'/>

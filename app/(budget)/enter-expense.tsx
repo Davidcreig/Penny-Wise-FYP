@@ -1,16 +1,21 @@
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker'; // Install this package if not already installed
-import { useLocalSearchParams } from 'expo-router';
-import { newExpense, updateSpentData } from '@/lib/appwrite';
+import { useLocalSearchParams, router } from 'expo-router';
+import { newExpense, updateSpentData, getBudgetSpent, getBudgetData } from '@/lib/appwrite';
+import useAppwrite from '@/lib/useAppwrite';
 
 const EnterExpense = () => {
-  const { budgetId, amountSpent, budgetAmount, userId } = useLocalSearchParams();
+  const { shopName1, amount1, category1} = useLocalSearchParams();
+  const { data: budgetInfo, refetch: refetch1 } = useAppwrite(getBudgetData);
   const [shopName, setShopName] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
 
+  const budgetId = budgetInfo.$id;
+  const amountSpent = budgetInfo.amountSpent;
+   // Fallback to 0 if spent is undefined or null
   const categories = [
     { label: 'Rent/Utilities', value: 'Rent/Utilities' },
     { label: 'Groceries', value: 'Groceries' },
@@ -22,12 +27,20 @@ const EnterExpense = () => {
     { label: 'Others', value: 'Other' },
   ];
 
+  useEffect(() => {
+    console.log(shopName1, amount1, category1)
+    setShopName((shopName1 as string) || ''); // Use passed parameter or leave empty
+    setCategory(category1 as string || ''); // Use passed parameter or leave empty
+    setAmount(amount1 as string || ''); // Use passed parameter or leave empty
+  }, [shopName1, amount1, category1]);
+
   const handleSubmit = () => {
-    if (!shopName || !category || !amount) {
+    if (!shopName || !category || !amount || !budgetId || !(amountSpent >= 0)) {
+      // Check if any field is empty or budgetId is undefined
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
-
+    console.log(budgetInfo)
     console.log(typeof amountSpent)
     const currentAmountSpent = parseFloat(amountSpent) || 0; // Fallback to 0 if amountSpent is undefined or null
     const newAmountSpent = currentAmountSpent + parseFloat(amount); // Add the new amount
@@ -41,6 +54,7 @@ const EnterExpense = () => {
     setShopName('');
     setCategory('');
     setAmount('');
+    router.push('/(tabs)/budget'); // Navigate to the budget page after submission
   };
 
   return (

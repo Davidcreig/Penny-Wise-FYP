@@ -36,7 +36,7 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
       });
   
       const result = await response.json();
-
+      console.log('OCR Result:', result);
     if (!result.success) {
       Alert.alert('Error', 'No receipt detected. Please try again.');
       return; // Exit the function early
@@ -56,7 +56,8 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
 
     for (const [category, shops] of Object.entries(ukShopsCategorized)) {
       for (const shop of shops) {
-        if (merchantWords.some((word) => shop.toLowerCase().includes(word))) {
+        const shopWords = shop.toLowerCase().split(/\s+/); // Split shop name into words
+        if (merchantWords.some((merchantWord) => shopWords.includes(merchantWord))) {
           expenseType = category; // Assign the matched category
           break;
         }
@@ -70,9 +71,9 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
     router.push({
       pathname: '/(budget)/enter-expense',
       params: {
-        shopName: merchantName,
-        amount: total.toFixed(2), // Format total to 2 decimal places
-        category: expenseType, // Pass the matched category
+        shopName1: merchantName,
+        amount1: total.toFixed(2), // Format total to 2 decimal places
+        category1: expenseType, // Pass the matched category
       },
     });
   } catch (error) {

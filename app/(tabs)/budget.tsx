@@ -89,15 +89,15 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
   }, [isFocused]);
 
   return (
-    <SafeAreaView className=' bg-black mb-20 p-5 justify-center'>
+    <SafeAreaView className=' bg-primary h-[100%] justify-center'>
       <ScrollView 
       className={"bg-primary"}
         // contentContainerStyle={} 
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
       >
-        <View className='gap-5 items-center'>
+        <View className='gap-5 pb-30 bg-primary items-center'>
           <Text className='text-black font-psemibold text-3xl mt-6'>Monthly Budget</Text>
           <Text className='text-secondary font-psemibold text-4xl'>{'£' + budgetInfo?.budgetAmount || '£ 0'}</Text>
           <View className='justify-center items-center'>
@@ -119,19 +119,26 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
               </Text>
             )}
           </View>
-            <View className="flex-shrink gap-5 py-5 min-h-[10%] bg-secondary-50 rounded-xl p-5 justify-center items-start">
-              {Object.keys(totals || {})
-                .filter((category) => totals[category] > 0) // Only include categories with values > 0
-                .map((category) => {
-                  const value = totals[category];
-                  const percentage = totalSum > 0 ? (value / totalSum) * 100 : 0; // Calculate percentage
-                  return (
-                    <Text key={category} className="font-pmedium text-lg">
-                      {category}: £{value.toFixed(2)} ({percentage.toFixed(1)}%)
-                    </Text>
-                  );
-                })}
-            </View>
+          <ScrollView
+            className="gap-5 py-5 max-h-[25%] bg-secondary-50 rounded-xl p-5"
+            contentContainerStyle={{ alignContent: "flex-start", justifyContent: "center" }}
+          >
+            {Object.keys(totals || {})
+              .filter((category) => totals[category] > 0) // Only include categories with values > 0
+              .map((category) => {
+                const value = totals[category];
+                const percentage = totalSum > 0 ? (value / totalSum) * 100 : 0; // Calculate percentage
+                return { category, value, percentage }; // Return an object with category, value, and percentage
+              })
+              .sort((a, b) => b.percentage - a.percentage) // Sort by percentage in descending order
+              .map(({ category, value, percentage }) => (
+                <View key={category} className="border-secondary-100 mb-2 border-b-2">
+                  <Text className="font-pmedium text-lg">
+                    {category}: £{value.toFixed(2)} ({percentage.toFixed(1)}%)
+                  </Text>
+                </View>
+              ))}
+          </ScrollView>
           <TouchableOpacity
             onPress={() => { router.push({
               pathname: '/(budget)/enter-expense',
@@ -143,7 +150,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
               }, // Pass budgetInfo.$id as a parameter
             }); 
           }} 
-            className='bg-secondary w-[80%] h-[10%] justify-center items-center rounded-xl' 
+            className='bg-secondary w-[80%] h-[8%] justify-center items-center rounded-xl' 
             activeOpacity={0.7}
           >
             <Text className='text-primary text-xl font-pmedium'>
@@ -151,7 +158,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
             </Text>
           </TouchableOpacity>
             <TouchableOpacity 
-              className='bg-gray-100 w-[150px] h-[10%] justify-center items-center rounded-xl' 
+              className='bg-gray-100 w-[150px] h-[5%] justify-center items-center rounded-xl' 
               activeOpacity={0.7}
               onPress={() => { router.push("/(budget)/predict-budget") }}
               >

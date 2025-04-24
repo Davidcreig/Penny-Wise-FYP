@@ -60,7 +60,8 @@ const profile = () => {
           </View>
           <View className='w-full items-center'>
             <View className='w-[85%]'>
-              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'>
+              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'
+              onPress={()=>{router.push("../(profileSettings)/loan-info")}}>
                 <View className='bg-secondary-50 justify-center items-center rounded-2xl p-2'>
                   <Image
                   resizeMode='contain'
@@ -80,7 +81,8 @@ const profile = () => {
           </View>
           <View className='w-full items-center'>
             <View className='w-[85%]'>
-              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'>
+              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'
+              onPress={()=>{router.push("../(profileSettings)/plaid-connect")}}>
                 <View className='bg-secondary-50 justify-center items-center rounded-2xl p-2'>
                   <Image
                   resizeMode='contain'
@@ -100,7 +102,8 @@ const profile = () => {
           </View>
           <View className='w-full items-center'>
             <View className='w-[85%]'>
-              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'>
+              <TouchableOpacity className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'
+              onPress={()=>{router.push("../(profileSettings)/personal-details")}}>
                 <View className='bg-secondary-50 justify-center rounded-2xl p-2'>
                   <Image
                   resizeMode='contain'

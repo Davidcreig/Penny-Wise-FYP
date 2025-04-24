@@ -34,17 +34,17 @@ const budgetInfo = () => {
           }
   }
   return (
-    <SafeAreaView className='items-center gap-2'>
-        <View>
-        <Text>budgetInfo</Text>
+    <SafeAreaView className='items-center justify-center h-full bg-primary  gap-5'>
+        <View className='w-full items-center  justify-center   mt-5'>
+        <Text className = "text-5xl pt-3 font-pmedium  border-b-2 border-secondary-50 " >Budget Information</Text>
         </View>
         <View className='w-full  items-center'>
-          <TextInput value={form.income} onChangeText={(e)=>setForm({ ...form, income: e})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Income'/>
+          <TextInput value={form.income} onChangeText={(e)=>setForm({ ...form, income: e})} className='bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl' placeholderTextColor={"#9fdcb5"} placeholder='Income'/>
         </View>
         {/* <View className='w-full  items-center'>
           <TextInput value={form.budget} onChangeText={(e)=>setForm({ ...form, income: e})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Income'/>
         </View> */}
-        <TouchableOpacity  onPress={submit} className='w-[90%] rounded-full p-4 bg-secondary items-center'>
+        <TouchableOpacity  onPress={submit} className='w-[80%] rounded-xl p-4  bg-secondary items-center'>
           <Text className='text-primary text-xl font-pmedium'>Set new income amount </Text>
         </TouchableOpacity>
     </SafeAreaView>
