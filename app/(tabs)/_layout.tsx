@@ -75,7 +75,7 @@ const TabsLayout = () => {
           <TabIcon
           icon={icons.graph}
           color={color}
-          name='Loan Prediction'
+          name='Loan Visualisation'
           focused={focused}
           />
         )

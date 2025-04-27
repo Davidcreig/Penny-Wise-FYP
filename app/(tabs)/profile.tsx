@@ -1,14 +1,25 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { icons } from '../../constants'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { signOut } from '@/lib/appwrite'
+import { getCurrentUser, signOut } from '@/lib/appwrite'
 import { useGLobalContext } from '@/context/GlobalProvider'
+import { useIsFocused } from '@react-navigation/native'
+import useAppwrite from '@/lib/useAppwrite'
 
 const profile = () => {
-
-  const {user, setUser, setIsLoggedIn} = useGLobalContext();
+  const {data: user1, refetch: refetch1} = useAppwrite(getCurrentUser)
+  const isFocused = useIsFocused();
+  
+    useEffect(() => {
+      if (isFocused) {
+        console.log('In inFocused Block profile', isFocused);
+        refetch1();
+      }
+    }, [isFocused]);
+    
+    const {user, setUser, setIsLoggedIn} = useGLobalContext();
 
   const logout = async () => {
     await signOut();
@@ -30,12 +41,12 @@ const profile = () => {
             <View className=' w-[150px] h-[150px] items-center justify-center  mb-3 rounded-full'>
               <Image
               className='w-full h-full rounded-full'
-              source={{uri: user?.avatar}}
+              source={{uri: user1?.avatar}}
               resizeMode='contain'
               />
             </View>
             <Text className='font-psemibold capitalize text-2xl'>
-              {user?.username}
+              {user1?.username}
             </Text>
           </View>
           <View className='w-full items-center'>

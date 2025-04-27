@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, RefreshControl, Image } from 'react-native'
 import React, { useState, useCallback, useEffect } from 'react'
 import PieChart from "react-native-pie-chart"
 import { router, useFocusEffect } from 'expo-router'
@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getBudgetData, getExpenses } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import { useIsFocused } from '@react-navigation/native'
+import { icons } from '@/constants'
 
 const Budget = () => {
   const { data: budgetInfo, refetch: refetch1 } = useAppwrite(getBudgetData)
@@ -82,14 +83,14 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
 
   useEffect(() => {
     if (isFocused) {
-      console.log('In inFocused Block', isFocused);
+      console.log('In inFocused Block budget', isFocused);
       refetch1();
       refetch2();
     }
   }, [isFocused]);
 
   return (
-    <SafeAreaView className=' bg-primary h-[100%] justify-center'>
+    <SafeAreaView className=' bg-primary pb-5 h-[100%] justify-center'>
       <ScrollView 
       className={"bg-primary"}
         // contentContainerStyle={} 
@@ -97,10 +98,24 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
       >
-        <View className='gap-5 pb-30 bg-primary items-center'>
+        <View className='pb-24 items-center flex-grow'>
           <Text className='text-black font-psemibold text-3xl mt-6'>Monthly Budget</Text>
-          <Text className='text-secondary font-psemibold text-4xl'>{'£' + budgetInfo?.budgetAmount || '£ 0'}</Text>
-          <View className='justify-center items-center'>
+          <View className='flex-row items-center justify-center'>
+            <Text className='text-secondary font-psemibold pt-3 text-5xl'>{'£' + budgetInfo?.budgetAmount || '£ 0'}</Text>
+            <TouchableOpacity
+              className=" pr-2 py-3 justify-center "
+              onPress={() => { router.push(
+                '/(profileSettings)/budget-info'
+              ); 
+            }} 
+            >
+              <Image
+              source={icons.edit}
+              className='w-8 h-8'
+              />
+            </TouchableOpacity>
+          </View>
+          <View className='justify-center min-w-[70%] min-h-[100px] my-2 items-center'>
             <Text className= {`font-pmedium text-gray justify-center absolute items-center text-4xl ${budgetInfo?.amountSpent < budgetInfo?.budgetAmount ? "text-gray" : "text-red-500"}`} >{'£' + budgetInfo?.amountSpent || '£ 0'}</Text>
             {isDataValid ? (
               <PieChart
@@ -114,31 +129,51 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
                 padAngle={0.02}
               />
             ) : (
-              <Text className="text-gray-500 text-lg mt-4">
+              <Text className="text-gray-500 absolute bottom-0  text-lg mt-4">
                 No data available for the chart
               </Text>
             )}
           </View>
-          <ScrollView
-            className="gap-5 py-5 max-h-[25%] bg-secondary-50 rounded-xl p-5"
-            contentContainerStyle={{ alignContent: "flex-start", justifyContent: "center" }}
-          >
-            {Object.keys(totals || {})
-              .filter((category) => totals[category] > 0) // Only include categories with values > 0
-              .map((category) => {
-                const value = totals[category];
-                const percentage = totalSum > 0 ? (value / totalSum) * 100 : 0; // Calculate percentage
-                return { category, value, percentage }; // Return an object with category, value, and percentage
-              })
-              .sort((a, b) => b.percentage - a.percentage) // Sort by percentage in descending order
-              .map(({ category, value, percentage }) => (
-                <View key={category} className="border-secondary-100 mb-2 border-b-2">
-                  <Text className="font-pmedium text-lg">
-                    {category}: £{value.toFixed(2)} ({percentage.toFixed(1)}%)
+          <Text className='text-black font-psemibold text-3xl w-[80%] pl-2 '>Expenses</Text>
+          <View className='border-2 border-secondary-50 rounded-xl gap-1'>
+            <ScrollView
+              className="gap-5 max-h-[135px] p-5 min-h-[10%] min-w-[80%] bg-primary rounded-xl"
+              contentContainerStyle={{ alignContent: "flex-start", justifyContent: "center", paddingBottom: 20 }}
+            >
+              {isDataValid ? (
+                Object.keys(totals || {})
+                .filter((category) => totals[category] > 0) // Only include categories with values > 0
+                .map((category) => {
+                  const value = totals[category];
+                  const percentage = totalSum > 0 ? (value / totalSum) * 100 : 0; // Calculate percentage
+                  return { category, value, percentage }; // Return an object with category, value, and percentage
+                })
+                .sort((a, b) => b.percentage - a.percentage) // Sort by percentage in descending order
+                .map(({ category, value, percentage }) => (
+                  <View key={category} className="bg-secondary-50 rounded-lg p-1 mb-1 ">
+                    <Text className="font-pmedium text-lg">
+                      {category}: £{value.toFixed(2)} ({percentage.toFixed(1)}%)
+                    </Text>
+                  </View>
+                ))
+              ) : (
+                <View className='w-full h-full items-center '>
+                  <Text className="text-gray-500 font-pmedium items-center justify-center text-lg">
+                    No expenses
                   </Text>
                 </View>
-              ))}
-          </ScrollView>
+                )}
+            </ScrollView>
+            
+              <TouchableOpacity 
+              className= "rounded-xl min-h-[5%]  items-center justify-center bg-primary " 
+              onPress={() => {router.push('/(budget)/edit-expenses')}}>
+                <Text className="font-pmedium text-lg">
+                  See all expenses
+                </Text>
+              </TouchableOpacity>
+            </View>
+          <View className='gap-3 mt-3 w-full items-center justify-center'>
           <TouchableOpacity
             onPress={() => { router.push({
               pathname: '/(budget)/enter-expense',
@@ -150,22 +185,23 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
               }, // Pass budgetInfo.$id as a parameter
             }); 
           }} 
-            className='bg-secondary w-[80%] h-[8%] justify-center items-center rounded-xl' 
+            className='bg-secondary w-[80%] h-[8%] min-h-[55px] justify-center items-center rounded-xl' 
             activeOpacity={0.7}
           >
             <Text className='text-primary text-xl font-pmedium'>
               Enter expense Manually
             </Text>
           </TouchableOpacity>
-            <TouchableOpacity 
-              className='bg-gray-100 w-[150px] h-[5%] justify-center items-center rounded-xl' 
-              activeOpacity={0.7}
-              onPress={() => { router.push("/(budget)/predict-budget") }}
-              >
-              <Text className='text-primary text-sm font-pmedium'>
-                See predicted budget
-              </Text>
-            </TouchableOpacity>
+          <TouchableOpacity 
+            className='bg-gray-100 w-[80%] min-h-[55px] justify-center items-center rounded-xl' 
+            activeOpacity={0.3}
+            onPress={() => { router.push("/(budget)/predict-budget") }}
+          >
+            <Text className='text-primary text-sm font-pmedium'>
+              See predicted budget
+            </Text>
+          </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

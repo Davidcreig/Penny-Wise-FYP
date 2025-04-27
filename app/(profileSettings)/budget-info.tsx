@@ -47,6 +47,9 @@ const budgetInfo = () => {
         <TouchableOpacity  onPress={submit} className='w-[80%] rounded-xl p-4  bg-secondary items-center'>
           <Text className='text-primary text-xl font-pmedium'>Set new income amount </Text>
         </TouchableOpacity>
+        <TouchableOpacity  onPress={()=>{router.push("/(budget)/edit-expenses")}} className='w-[80%] rounded-xl p-4  bg-secondary items-center'>
+          <Text className='text-primary text-xl font-pmedium'>See expense list </Text>
+        </TouchableOpacity>
     </SafeAreaView>
   )
 }

@@ -15,6 +15,7 @@ import scan from "../assets/icons/scan.png";
 import calculator from "../assets/icons/calculator.png";
 import rightArrowB from "../assets/icons/rightArrow.png";
 import bank from "../assets/icons/bank.png";
+import edit from "../assets/icons/edit.png";
 
 
 export default {
@@ -35,4 +36,5 @@ export default {
   calculator,
   rightArrowB,
   bank,
+  edit,
 };

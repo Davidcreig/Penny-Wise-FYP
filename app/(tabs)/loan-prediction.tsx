@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import { getLoanData } from '@/lib/appwrite';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import useAppwrite from '@/lib/useAppwrite';
+import { router } from 'expo-router';
 
 // TypeScript interfaces for Repayment data
 interface Repayment {
@@ -17,87 +22,171 @@ const calculateRepayments = (
   plan: string,
   years: number = 30
 ): Repayment[] => {
-  // Loan plans with different repayment thresholds, rates, and write-off durations
   const plans: Record<string, { threshold: number; rate: number; writeOff: number; interest: number }> = {
-    "1": { threshold: 24990, rate: 0.09, writeOff: 25, interest: 0.03 },
-    "2": { threshold: 27295, rate: 0.09, writeOff: 30, interest: 0.05 },
-    "3": { threshold: 21000, rate: 0.06, writeOff: 30, interest: 0.06 },
-    "4": { threshold: 27660, rate: 0.09, writeOff: 30, interest: 0.05 },
-    "5": { threshold: 25000, rate: 0.09, writeOff: 40, interest: 0.03 },
+    "1": { threshold: 26065, rate: 0.09, writeOff: 25, interest: 0.043 },
+    "2": { threshold: 28470, rate: 0.09, writeOff: 30, interest: 0.043 },
+    "3": { threshold: 21000, rate: 0.06, writeOff: 30, interest: 0.073 },
+    "4": { threshold: 32745, rate: 0.09, writeOff: 30, interest: 0.043 },
+    "5": { threshold: 25000, rate: 0.09, writeOff: 40, interest: 0.043 },
   };
 
   const { threshold, rate, writeOff, interest } = plans[plan];
 
-  let balance = initialDebt; // Initial debt balance
-  let salary = income; // Starting salary
-  const repayments: Repayment[] = []; // Array to store repayment data
-  const salaryGrowth = 0.02; // Annual salary growth of 2%
+  let balance = initialDebt;
+  let salary = income;
+  const repayments: Repayment[] = [];
+  const salaryGrowth = 0.02;
 
-  // Calculate repayment for each year
-  for (let year = 1; year <= Math.min(years, writeOff); year++) {
-    const annualRepayment = Math.max((salary - threshold) * rate, 0); // Repayment is percentage of salary above threshold
-    balance = balance * (1 + interest) - annualRepayment; // Apply interest and subtract the repayment
+  for (let year = 0; year <= Math.min(years, writeOff); year++) {
+    const annualRepayment = Math.max((salary - threshold) * rate, 0);
+    balance = balance * (1 + interest) - annualRepayment;
 
-    if (balance <= 0) break; // Stop if the loan is fully paid off
+    if (balance <= 0 || isNaN(balance) || !isFinite(balance)) {
+      balance = Math.max(balance, 0);
+      repayments.push({ year, balance, annualRepayment });
+      break;
+    }
 
     repayments.push({ year, balance, annualRepayment });
-    salary *= (1 + salaryGrowth); // Apply salary growth
+    salary *= 1 + salaryGrowth;
   }
 
   return repayments;
 };
 
 // Student Loan Repayment Chart Component
-const StudentLoanChart: React.FC<{
-  income?: number;
-  initialDebt?: number;
-  plan?: string;
-}> = ({ income = 30000, initialDebt = 50000, plan = "2" }) => {
+const StudentLoanChart: React.FC = () => {
   const [data, setData] = useState<Repayment[]>([]);
+  const [loading, setLoading] = useState(true); // State to manage loading
+  const [selectedPoint, setSelectedPoint] = useState<{ year: number; balance: number } | null>(null); // State for the selected data point
+  const isFocused = useIsFocused();
+  const { data: loanData1, refetch: refetch1 } = useAppwrite(getLoanData); // Fetch loan data using Appwrite
 
   useEffect(() => {
-    // Calculate repayments whenever the component mounts or when inputs change
-    setData(calculateRepayments(income, initialDebt, plan));
-  }, [income, initialDebt, plan]);
+    const fetchLoanData = async () => {
+      try {
+        const loanData = await getLoanData(); // Fetch loan data asynchronously
+        if (loanData) {
+          const { salary, loanBalance, loanPlan } = loanData; // Extract data from loanData
+          const repayments = calculateRepayments(salary, loanBalance, loanPlan); // Calculate repayments
+          setData(repayments); // Set the calculated data
+        }
+      } catch (error) {
+        console.error('Error fetching loan data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
+      }
+    };
+
+    if (isFocused) {
+      fetchLoanData();
+      refetch1(); // Fetch loan data when the page is focused
+    }
+  }, [isFocused]);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="h-full bg-primary">
+        <View className="h-full items-center justify-center">
+          <ActivityIndicator size="large" color="#76CE96" />
+          <Text className="text-lg font-psemibold text-gray-700 mt-4">
+            Loading loan Data...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Student Loan Repayment Over Time</Text>
-      <LineChart
-        data={{
-          labels: data.map(d => d.year.toString()), // Year labels
-          datasets: [
-            {
-              data: data.map(d => d.balance), // Plot the balance over the years
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width - 40} // Adjust chart width
-        height={220}
-        yAxisLabel="£" // Currency symbol
-        chartConfig={{
-          backgroundGradientFrom: "#fff",
-          backgroundGradientTo: "#fff",
-          color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Line color
-          decimalPlaces: 0, // Round to nearest pound
-        }}
-        style={{ marginVertical: 8, borderRadius: 16 }}
-      />
-    </View>
+    <SafeAreaView className="h-full px-5 bg-primary">
+      <Text className="font-psemibold mt-6 text-3xl text-center">
+        Student Loan Repayment Over Time
+      </Text>
+      <TouchableOpacity 
+      onPress={() => {router.push('/(profileSettings)/loan-info')}}
+      className=" items-center justify-center flex-row  rounded-2xl p-3 mt-3">
+        <View className='items-center justify-center'>
+        <View className='justify-center items-center h-[60px]'>
+
+          <Text className="text-gray-500 font-pregular min-h-[10%] text-md text-center">
+            Student Loan {"\n"} Initial Balance
+          </Text>
+        </View>
+          <Text className="text-secondary font-psemibold pt-3 text-2xl text-center">
+            {'£' + loanData1.loanBalance || '£ 0'}
+          </Text>
+        </View>
+        <View className='border-r-2 border-l-2 justify-center items-center p-1 m-1 border-secondary-50'>
+        <View className='justify-center items-center h-[60px]'>
+
+          <Text className="text-gray-500 min-h-[10%] font-pregular text-md text-center">
+            Student Loan {"\n"} Plan
+          </Text>
+        </View>
+          <Text className="text-secondary font-psemibold pt-3 text-2xl text-center">
+            {loanData1.loanPlan}
+          </Text>
+        </View>
+        <View className='items-center justify-center'>
+          <View className='justify-center items-center h-[60px]'>
+            <Text className="text-gray-500 min-h-[10%]  font-pregular text-md text-center">
+              Expected{"\n"} Annual Salary {"\n"} after Graduation
+            </Text>
+          </View>
+          <Text className="text-secondary font-psemibold pt-3 text-2xl text-center">
+            {'£' + loanData1.salary || '£ 0'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <View className="w-full items-center justify-between">
+        <Text className="text-gray-500 font-pregular text-lg mt-1 text-center">
+          Loan Balance Over Time:
+        </Text>
+        <View className="flex-shrink border-2 border-secondary-50 rounded-xl mt-1">
+          <LineChart
+            data={{
+              labels: data
+                .filter((d) => isFinite(d.balance))
+                .map((d) => d.year.toString())
+                .filter((year) => parseInt(year) % 5 === 0),
+              legend: ["Loan Balance on Year X"],
+              datasets: [
+                {
+                  data: data.map((d) => (isFinite(d.balance) ? d.balance : 0)),
+                },
+              ],
+            }}
+            width={Dimensions.get('window').width - 40}
+            height={220}
+            yAxisLabel="£"
+            chartConfig={{
+              backgroundGradientFrom: "#FFFAFA",
+              backgroundGradientTo: "#FFFAFA",
+              color: (opacity = 1) => `rgba(118, 206, 150, ${opacity})`,
+              decimalPlaces: 0,
+            }}
+            style={{ marginVertical: 2, borderRadius: 16 }}
+            onDataPointClick={(data) => {
+              const year = parseInt(data.index.toString()); // Assuming labels are every 5 years
+              const balance = data.value;
+              setSelectedPoint({ year, balance });
+              // Alert.alert(`Year: ${year}`, `Balance: £${balance.toFixed(2)}`);
+            }}
+          />
+        </View>
+        {selectedPoint && (
+          <View className="w-full items-center justify-center mt-4">
+            <Text className="text-gray-500 font-pregular text-lg text-center">
+              Selected Year: {selectedPoint.year}
+            </Text>
+            <Text className="text-secondary font-psemibold text-2xl text-center">
+              Balance: £{selectedPoint.balance.toFixed(2)}
+            </Text>
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
-
-// Styles for the component
-const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-    padding: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
 
 export default StudentLoanChart;

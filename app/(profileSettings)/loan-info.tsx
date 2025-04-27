@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker'; // Install this package if not already installed
 import { router } from 'expo-router';
+import { updateLoanInfo } from '@/lib/appwrite';
 
 const LoanInfo = () => {
 
@@ -29,14 +30,9 @@ const LoanInfo = () => {
 
     try {
       Alert.alert('Success', 'Loan information submitted successfully!');
-      router.push({
-        pathname: '/(tabs)/loan-prediction',
-        params: {
-          income: parseFloat(form.income),
-          totalDebt: parseFloat(form.totalDebt),
-          loanType: form.loanType,
-        },
-      });
+      updateLoanInfo(form.income, form.totalDebt, form.loanType); // Call the function to update loan info
+      router.push('/(tabs)/budget'
+      );
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to submit loan information.');

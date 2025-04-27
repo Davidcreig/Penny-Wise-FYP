@@ -46,9 +46,11 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
     const receipt = result.receipts?.[0]; // Get the first receipt
     const merchantName = receipt?.merchant_name || 'Unknown Merchant';
     const total = receipt?.total || 0;
+    const date = receipt?.date || new Date().toISOString(); // Use current date if not found
 
     console.log('Merchant Name:', merchantName);
     console.log('Total:', total);
+    console.log('Date:', date);
 
     // Match merchant_name with categories in uk_shops_categorized.json
     let expenseType = 'Uncategorized'; // Default category
@@ -73,7 +75,8 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
       params: {
         shopName1: merchantName,
         amount1: total.toFixed(2), // Format total to 2 decimal places
-        category1: expenseType, // Pass the matched category
+        category1: expenseType,
+        date1: date,  // Pass the matched category
       },
     });
   } catch (error) {

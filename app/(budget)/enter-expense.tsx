@@ -1,21 +1,24 @@
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Picker } from '@react-native-picker/picker'; // Install this package if not already installed
+import { Picker } from '@react-native-picker/picker';
 import { useLocalSearchParams, router } from 'expo-router';
-import { newExpense, updateSpentData, getBudgetSpent, getBudgetData } from '@/lib/appwrite';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { newExpense, updateSpentData, getBudgetData } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite';
 
 const EnterExpense = () => {
-  const { shopName1, amount1, category1} = useLocalSearchParams();
-  const { data: budgetInfo, refetch: refetch1 } = useAppwrite(getBudgetData);
+  const { shopName1, amount1, category1, date1 } = useLocalSearchParams();
+  const { data: budgetInfo } = useAppwrite(getBudgetData);
   const [shopName, setShopName] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const budgetId = budgetInfo.$id;
-  const amountSpent = budgetInfo.amountSpent;
-   // Fallback to 0 if spent is undefined or null
+  const budgetId = budgetInfo?.$id;
+  const amountSpent = budgetInfo?.amountSpent;
+
   const categories = [
     { label: 'Rent/Utilities', value: 'Rent/Utilities' },
     { label: 'Groceries', value: 'Groceries' },
@@ -28,88 +31,114 @@ const EnterExpense = () => {
   ];
 
   useEffect(() => {
-    console.log(shopName1, amount1, category1)
-    setShopName((shopName1 as string) || ''); // Use passed parameter or leave empty
-    setCategory(category1 as string || ''); // Use passed parameter or leave empty
-    setAmount(amount1 as string || ''); // Use passed parameter or leave empty
-  }, [shopName1, amount1, category1]);
+    setShopName((shopName1 as string) || '');
+    setCategory((category1 as string) || '');
+    setAmount((amount1 as string) || '');
+    if (date1) {
+      setDate(new Date(date1 as string));
+    }
+  }, [shopName1, amount1, category1, date1]);
 
   const handleSubmit = () => {
     if (!shopName || !category || !amount || !budgetId || !(amountSpent >= 0)) {
-      // Check if any field is empty or budgetId is undefined
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
-    console.log(budgetInfo)
-    console.log(typeof amountSpent)
-    const currentAmountSpent = parseFloat(amountSpent) || 0; // Fallback to 0 if amountSpent is undefined or null
-    const newAmountSpent = currentAmountSpent + parseFloat(amount); // Add the new amount
-    // Handle the form submission logic here
-    newExpense(shopName, category, parseFloat(amount), budgetId)
-    updateSpentData(budgetId, newAmountSpent)
-    console.log('Expense Submitted:', { shopName, category, amount });
+
+    const currentAmountSpent = parseFloat(amountSpent) || 0;
+    const newAmountSpent = currentAmountSpent + parseFloat(amount);
+
+    newExpense(shopName, category, parseFloat(amount), budgetId, date.toISOString());
+    updateSpentData(budgetId, newAmountSpent);
+
     Alert.alert('Success', 'Expense added successfully!');
-    console.log('Budget ID:', budgetId, amountSpent); // Log the budgetId for debugging
-    console.log("here")
     setShopName('');
     setCategory('');
     setAmount('');
-    router.push('/(tabs)/budget'); // Navigate to the budget page after submission
+    setDate(new Date());
+    router.push('/(tabs)/budget');
+  };
+
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-secondary justify-center">
-      <View className="gap-4">
-        {/* Shop Name Input */}
-        <View>
-          <Text className="text-lg font-semibold mb-2">Shop Name</Text>
-          <TextInput
-            value={shopName}
-            onChangeText={setShopName}
-            placeholder="Enter shop name"
-            placeholderTextColor='black'
-            className="bg-white p-3 rounded-lg border border-gray-300"
-          />
-        </View>
-
-        {/* Category Dropdown */}
-        <View>
-          <Text className="text-lg font-semibold mb-2">Category of Expense</Text>
-          <View className="bg-white rounded-lg border border-gray-300 overflow-hidden">
-            <Picker
-              selectedValue={category}
-              onValueChange={(itemValue) => setCategory(itemValue)}
-              itemStyle={{ color: 'black' }} // Set the text color to black
-            >
-              <Picker.Item label="Select a category" value="" />
-              {categories.map((cat) => (
-                <Picker.Item key={cat.value} label={cat.label} value={cat.value} />
-              ))}
-            </Picker>
-          </View>
-        </View>
-
-        {/* Amount Input */}
-        <View>
-          <Text className="text-lg font-semibold mb-2">Amount</Text>
-          <TextInput
-            value={amount}
-            onChangeText={setAmount}
-            placeholder="Enter amount"
-            placeholderTextColor='black'
-            keyboardType="numeric"
-            className="bg-white p-3 rounded-lg border border-gray-300"
-          />
-        </View>
-
-        {/* Submit Button */}
-        <TouchableOpacity
-          onPress={handleSubmit}
-          className="bg-secondary border-2 border-white p-4 rounded-lg items-center mt-4"
-        >
-          <Text className="text-white text-lg font-semibold">Submit Expense</Text>
-        </TouchableOpacity>
+    <SafeAreaView className="items-center justify-center h-full bg-primary gap-5">
+      {/* Title */}
+      <View className="items-center w-[80%] justify-center mt-5">
+        <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">
+          Enter Expense
+        </Text>
       </View>
+
+      {/* Shop Name Input */}
+      <View className="w-full items-center">
+        <TextInput
+          value={shopName}
+          onChangeText={setShopName}
+          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+          placeholderTextColor="#9fdcb5"
+          placeholder="Shop Name"
+        />
+      </View>
+
+      {/* Category Dropdown */}
+      <View className="w-full items-center">
+        <View className="bg-primary font-pmedium border-2 w-[80%] p-2 border-secondary-50 focus:border-secondary rounded-xl">
+          <Picker
+            selectedValue={category}
+            onValueChange={(itemValue) => setCategory(itemValue)}
+            style={{ color: '#9fdcb5' }}
+          >
+            <Picker.Item label="Select a category" value="" />
+            {categories.map((cat) => (
+              <Picker.Item key={cat.value} label={cat.label} value={cat.value} />
+            ))}
+          </Picker>
+        </View>
+      </View>
+
+      {/* Amount Input */}
+      <View className="w-full items-center">
+        <TextInput
+          value={amount}
+          onChangeText={setAmount}
+          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+          placeholderTextColor="#9fdcb5"
+          placeholder="Amount (£)"
+          keyboardType="numeric"
+        />
+      </View>
+
+      {/* Date Picker */}
+      <View className="w-full items-center">
+        <TouchableOpacity
+          onPress={() => setShowDatePicker(true)}
+          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+        >
+          <Text className="text-secondary">{date.toDateString()}</Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+      </View>
+
+      {/* Submit Button */}
+      <TouchableOpacity
+        onPress={handleSubmit}
+        className="w-[80%] rounded-xl p-4 bg-secondary items-center"
+      >
+        <Text className="text-primary text-xl font-pmedium">Submit Expense</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
