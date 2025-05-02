@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker'; // Install this package if not already installed
 import { router } from 'expo-router';
@@ -40,59 +40,73 @@ const LoanInfo = () => {
   };
 
   return (
-    <SafeAreaView className="items-center justify-center h-full bg-primary gap-5">
-      {/* Title */}
-      <View className=" items-center w-[80%] justify-center mt-5">
-        <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">Loan Information</Text>
-      </View>
-
-      {/* Income Input */}
-      <View className="w-full items-center">
-        <TextInput
-          value={form.income}
-          onChangeText={(e) => setForm({ ...form, income: e })}
-          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
-          placeholderTextColor="#9fdcb5"
-          placeholder="Expected Annual Income (£)"
-          keyboardType="numeric"
-        />
-      </View>
-
-      {/* Total Debt Input */}
-      <View className="w-full items-center">
-        <TextInput
-          value={form.totalDebt}
-          onChangeText={(e) => setForm({ ...form, totalDebt: e })}
-          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
-          placeholderTextColor="#9fdcb5"
-          placeholder="Total Student Loan (£)"
-          keyboardType="numeric"
-        />
-      </View>
-
-      {/* Loan Type Picker */}
-      <View className="w-full items-center">
-        <View className="bg-primary font-pmedium border-2 w-[80%] p-2 border-secondary-50 focus:border-secondary rounded-xl">
-          <Picker
-            selectedValue={form.loanType}
-            onValueChange={(itemValue) => setForm({ ...form, loanType: itemValue })}
-            style={{ color: '#9fdcb5' }}
-          >
-            <Picker.Item label="Select Loan Type" value="" />
-            {loanTypes.map((type) => (
-              <Picker.Item key={type.value} label={type.label} value={type.value} />
-            ))}
-          </Picker>
-        </View>
-      </View>
-
-      {/* Submit Button */}
-      <TouchableOpacity
-        onPress={handleSubmit}
-        className="w-[80%] rounded-xl p-4 bg-secondary items-center"
+    <SafeAreaView className="h-full bg-primary">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1"
       >
-        <Text className="text-primary text-xl font-pmedium">Submit Loan Info</Text>
-      </TouchableOpacity>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View className="items-center justify-center h-full gap-5">
+            {/* Title */}
+            <View className="items-center w-[80%] justify-center mt-5">
+              <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">
+                Loan Information
+              </Text>
+            </View>
+
+            {/* Income Input */}
+            <View className="w-full items-center">
+              <TextInput
+                value={form.income}
+                onChangeText={(e) => setForm({ ...form, income: e })}
+                className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+                placeholderTextColor="#9fdcb5"
+                placeholder="Expected Annual Income (£)"
+                keyboardType="numeric"
+              />
+            </View>
+
+            {/* Total Debt Input */}
+            <View className="w-full items-center">
+              <TextInput
+                value={form.totalDebt}
+                onChangeText={(e) => setForm({ ...form, totalDebt: e })}
+                className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+                placeholderTextColor="#9fdcb5"
+                placeholder="Total Student Loan (£)"
+                keyboardType="numeric"
+              />
+            </View>
+
+            {/* Loan Type Picker */}
+            <View className="w-full items-center">
+              <View className="bg-primary font-pmedium border-2 w-[80%] p-2 border-secondary-50 focus:border-secondary rounded-xl">
+                <Picker
+                  selectedValue={form.loanType}
+                  onValueChange={(itemValue) => setForm({ ...form, loanType: itemValue })}
+                  style={{ color: '#9fdcb5' }}
+                >
+                  <Picker.Item label="Select Loan Type" value="" />
+                  {loanTypes.map((type) => (
+                    <Picker.Item key={type.value} label={type.label} value={type.value} />
+                  ))}
+                </Picker>
+              </View>
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              onPress={handleSubmit}
+              className="w-[80%] rounded-xl p-4 bg-secondary items-center"
+            >
+              <Text className="text-primary text-xl font-pmedium">Submit Loan Info</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import PieChart from "react-native-pie-chart"
 import { router, useFocusEffect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { getBudgetData, getExpenses } from '@/lib/appwrite'
+import { getBudgetData, getBudgetSpent, getExpenses } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import { useIsFocused } from '@react-navigation/native'
 import { icons } from '@/constants'
@@ -11,6 +11,7 @@ import { icons } from '@/constants'
 const Budget = () => {
   const { data: budgetInfo, refetch: refetch1 } = useAppwrite(getBudgetData)
   const {data: totals, refetch: refetch2} = useAppwrite(getExpenses)
+  const {data: spent, refetch: refetch3} = useAppwrite(getBudgetSpent)
   const [refreshing, setRefreshing] = useState(false)
   const [hasRefreshed, setHasRefreshed] = useState(false);
   console.log(totals)
@@ -116,7 +117,8 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
             </TouchableOpacity>
           </View>
           <View className='justify-center min-w-[70%] min-h-[100px] my-2 items-center'>
-            <Text className= {`font-pmedium text-gray justify-center absolute items-center text-4xl ${budgetInfo?.amountSpent < budgetInfo?.budgetAmount ? "text-gray" : "text-red-500"}`} >{'£' + budgetInfo?.amountSpent || '£ 0'}</Text>
+            <Text className= {`font-pmedium text-gray justify-center absolute items-center text-4xl 
+              ${budgetInfo?.amountSpent < budgetInfo?.budgetAmount ? "text-gray" : "text-red-500"}`} >{'£' + budgetInfo?.amountSpent || '£ 0'}</Text>
             {isDataValid ? (
               <PieChart
                 widthAndHeight={widthAndHeight}

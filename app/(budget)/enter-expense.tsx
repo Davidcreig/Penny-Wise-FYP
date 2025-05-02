@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
@@ -56,7 +56,9 @@ const EnterExpense = () => {
     setCategory('');
     setAmount('');
     setDate(new Date());
-    router.push('/(tabs)/budget');
+    setTimeout(() => {
+      router.push('/(tabs)/budget');
+    }, 2000);
   };
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
@@ -67,78 +69,91 @@ const EnterExpense = () => {
   };
 
   return (
-    <SafeAreaView className="items-center justify-center h-full bg-primary gap-5">
-      {/* Title */}
-      <View className="items-center w-[80%] justify-center mt-5">
-        <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">
-          Enter Expense
-        </Text>
-      </View>
-
-      {/* Shop Name Input */}
-      <View className="w-full items-center">
-        <TextInput
-          value={shopName}
-          onChangeText={setShopName}
-          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
-          placeholderTextColor="#9fdcb5"
-          placeholder="Shop Name"
-        />
-      </View>
-
-      {/* Category Dropdown */}
-      <View className="w-full items-center">
-        <View className="bg-primary font-pmedium border-2 w-[80%] p-2 border-secondary-50 focus:border-secondary rounded-xl">
-          <Picker
-            selectedValue={category}
-            onValueChange={(itemValue) => setCategory(itemValue)}
-            style={{ color: '#9fdcb5' }}
-          >
-            <Picker.Item label="Select a category" value="" />
-            {categories.map((cat) => (
-              <Picker.Item key={cat.value} label={cat.label} value={cat.value} />
-            ))}
-          </Picker>
-        </View>
-      </View>
-
-      {/* Amount Input */}
-      <View className="w-full items-center">
-        <TextInput
-          value={amount}
-          onChangeText={setAmount}
-          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
-          placeholderTextColor="#9fdcb5"
-          placeholder="Amount (£)"
-          keyboardType="numeric"
-        />
-      </View>
-
-      {/* Date Picker */}
-      <View className="w-full items-center">
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
-        >
-          <Text className="text-secondary">{date.toDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
-          />
-        )}
-      </View>
-
-      {/* Submit Button */}
-      <TouchableOpacity
-        onPress={handleSubmit}
-        className="w-[80%] rounded-xl p-4 bg-secondary items-center"
+    <SafeAreaView className="h-full bg-primary">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1"
       >
-        <Text className="text-primary text-xl font-pmedium">Submit Expense</Text>
-      </TouchableOpacity>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View className="items-center justify-center h-full gap-5">
+            {/* Title */}
+            <View className="items-center w-[80%] justify-center mt-5">
+              <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">
+                Enter Expense
+              </Text>
+            </View>
+
+            {/* Shop Name Input */}
+            <View className="w-full items-center">
+              <TextInput
+                value={shopName}
+                onChangeText={setShopName}
+                className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+                placeholderTextColor="#9fdcb5"
+                placeholder="Shop Name"
+              />
+            </View>
+
+            {/* Category Dropdown */}
+            <View className="w-full items-center">
+              <View className="bg-primary font-pmedium border-2 w-[80%] p-2 border-secondary-50 focus:border-secondary rounded-xl">
+                <Picker
+                  selectedValue={category}
+                  onValueChange={(itemValue) => setCategory(itemValue)}
+                  style={{ color: '#9fdcb5' }}
+                >
+                  <Picker.Item label="Select a category" value="" />
+                  {categories.map((cat) => (
+                    <Picker.Item key={cat.value} label={cat.label} value={cat.value} />
+                  ))}
+                </Picker>
+              </View>
+            </View>
+
+            {/* Amount Input */}
+            <View className="w-full items-center">
+              <TextInput
+                value={amount}
+                onChangeText={setAmount}
+                className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+                placeholderTextColor="#9fdcb5"
+                placeholder="Amount (£)"
+                keyboardType="numeric"
+              />
+            </View>
+
+            {/* Date Picker */}
+            <View className="w-full items-center">
+              <TouchableOpacity
+                onPress={() => setShowDatePicker(true)}
+                className="bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl"
+              >
+                <Text className="text-secondary">{date.toDateString()}</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChange}
+                  maximumDate={new Date()} 
+                />
+              )}
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              onPress={handleSubmit}
+              className="w-[80%] rounded-xl p-4 bg-secondary items-center"
+            >
+              <Text className="text-primary text-xl font-pmedium">Submit Expense</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
