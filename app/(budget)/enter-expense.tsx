@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import { useLocalSearchParams, router } from 'expo-router';
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import { newExpense, updateSpentData, getBudgetData } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite';
 
