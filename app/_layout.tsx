@@ -38,6 +38,8 @@ export default function RootLayout() {
 
             <Stack.Screen name= "(profileSettings)" options={{headerShown: false}} />
 
+            <Stack.Screen name= "(registration)" options={{headerShown: false}} />
+
       </Stack>
     </GlobalProvider>
   )

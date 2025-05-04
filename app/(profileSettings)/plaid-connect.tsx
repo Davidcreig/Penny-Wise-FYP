@@ -13,7 +13,7 @@ const connectPlaid = () => {
       {/* Title */}
       <View className=" items-center justify-center mt-5">
         <Text className="text-5xl pt-3 font-pmedium border-b-2 border-secondary-50">
-          Connect to Plaid
+          Connect to Bank
         </Text>
       </View>
 
@@ -29,7 +29,7 @@ const connectPlaid = () => {
         onPress={handleConnect}
         className="w-[80%] rounded-xl p-4 bg-secondary items-center mt-10"
       >
-        <Text className="text-primary text-xl font-pmedium">Connect to Plaid</Text>
+        <Text className="text-primary text-xl font-pmedium">Connect through Plaid</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

@@ -9,8 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "package": "com.david.pennywise"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

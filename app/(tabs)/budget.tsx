@@ -100,7 +100,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
         // }
       >
         <View className='pb-24 items-center flex-grow'>
-          <Text className='text-black font-psemibold text-3xl mt-6'>Monthly Budget</Text>
+          <Text className='text-black font-psemibold text-3xl mt-6'>{new Date().toLocaleString('default', { month: 'long' })}'s Budget</Text>
           <View className='flex-row items-center justify-center'>
             <Text className='text-secondary font-psemibold pt-3 text-5xl'>{'£' + budgetInfo?.budgetAmount || '£ 0'}</Text>
             <TouchableOpacity

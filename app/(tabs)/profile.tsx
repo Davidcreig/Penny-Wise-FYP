@@ -51,7 +51,7 @@ const profile = () => {
           </View>
           <View className='w-full items-center'>
             <View className='w-[85%]'>
-              <TouchableOpacity onPress={()=>{router.push("../(profileSettings)/budget-info")}} className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'>
+              <TouchableOpacity onPress={()=>{router.push("../(registration)/reg-email")}} className='flex-row justify-between w-full h-[70px] items-center border-b border-gray-200'>
                 <View className='bg-secondary-50 justify-center items-center rounded-2xl p-2'>
                   <Image
                   resizeMode='contain'

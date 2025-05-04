@@ -1,7 +1,7 @@
 import { View, Text, Image, Platform, Dimensions } from 'react-native'
 import React from 'react'
 import {Tabs, Redirect} from 'expo-router';
-import {icons} from '../../constants';
+import {icons, images} from '../../constants';
 import { StatusBar } from 'expo-status-bar';
 
 const {height} = Dimensions.get('window');
@@ -58,8 +58,7 @@ const TabsLayout = () => {
         headerShown: false,
         tabBarIcon:({color, focused})=>(
           <TabIcon
-          icon={icons.calculator}
-          color={color}
+          icon={images.icon}
           name='Budget'
           focused={focused}
           />

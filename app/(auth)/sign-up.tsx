@@ -27,9 +27,11 @@ const SignUp = () => {
     const submit = async () => {
         if (form.password !== repeatedPass) {  
         Alert.alert('Error', 'Passwords do not match');
+        return
         }
         if(!form.username || !form.email || !form.password){
             Alert.alert('Error','Please fill in all the fields')
+            return;
         }
 
         setIsSubmitting(true);
@@ -39,7 +41,7 @@ const SignUp = () => {
             console.log('hi')
             //set global state 
 
-            router.replace('/(tabs)/budget')
+            router.replace('/(registration)/reg-budget')
         } catch (error) {
             console.log(error)
         }

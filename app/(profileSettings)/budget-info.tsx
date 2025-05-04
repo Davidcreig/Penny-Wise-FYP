@@ -14,6 +14,7 @@ const budgetInfo = () => {
   const submit = async () => {
       if(!form.income){
               Alert.alert('Error','Please fill in all the fields')
+              return;
           }
   
           setIsSubmitting(true);
