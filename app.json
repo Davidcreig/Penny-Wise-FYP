@@ -4,7 +4,7 @@
     "slug": "Penny-Wise-FYP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/outside-icon.png",
     "scheme": "pennywise",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
