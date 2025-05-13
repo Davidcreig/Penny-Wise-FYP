@@ -16,5 +16,5 @@
     "expo-env.d.js",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-, "context/GlobalProvider.js"  ]
+, "context/GlobalProvider.js", "lib/appwrite.js"  ]
 }

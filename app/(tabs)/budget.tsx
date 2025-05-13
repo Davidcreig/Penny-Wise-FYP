@@ -91,7 +91,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
   }, [isFocused]);
 
   return (
-    <SafeAreaView className=' bg-primary pb-5 h-[100%] justify-center'>
+    <SafeAreaView className=' bg-primary h-full pb-5 justify-center'>
       <ScrollView 
       className={"bg-primary"}
         // contentContainerStyle={} 
@@ -136,7 +136,15 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
               </Text>
             )}
           </View>
-          <Text className='text-black font-psemibold text-3xl w-[80%] pl-2 '>Expenses</Text>
+          <View className='w-full flex-row p-1 mr-8 justify-end items-center px-6'>
+            <Text className='text-black font-psemibold text-3xl w-[80%] pl-2 '>Expenses</Text> 
+            <TouchableOpacity
+              onPress={() => router.push('/(budget)/literature')}
+              className="bg-secondary p-2 rounded-full"
+            >
+              <Text className="font-psemibold text-primary px-2 text-sm font-pmedium">i</Text>
+            </TouchableOpacity>
+          </View>
           <View className='border-2 border-secondary-50 rounded-xl gap-1'>
             <ScrollView
               className="gap-5 max-h-[135px] p-5 min-h-[10%] min-w-[80%] bg-primary rounded-xl"
@@ -180,11 +188,11 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
             onPress={() => { router.push({
               pathname: '/(budget)/enter-expense',
               params: {
-                budgetId: budgetInfo?.$id, // Existing parameter
-                amountSpent: budgetInfo?.amountSpent, // Existing parameter
-                budgetAmount: budgetInfo?.budgetAmount, // New parameter
-                userId: budgetInfo?.userId, // New parameter
-              }, // Pass budgetInfo.$id as a parameter
+                budgetId: budgetInfo?.$id,
+                amountSpent: budgetInfo?.amountSpent,
+                budgetAmount: budgetInfo?.budgetAmount,
+                userId: budgetInfo?.userId,
+              },
             }); 
           }} 
             className='bg-secondary w-[80%] h-[8%] min-h-[55px] justify-center items-center rounded-xl' 
@@ -195,13 +203,16 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
             </Text>
           </TouchableOpacity>
           <TouchableOpacity 
-            className='bg-gray-100 w-[80%] min-h-[55px] justify-center items-center rounded-xl' 
-            activeOpacity={0.3}
+            className='bg-gradient-to-r from-blue-500 to-purple-600 w-[80%] min-h-[55px] justify-center items-center rounded-xl bg-blue-200' 
+            activeOpacity={0.7}
             onPress={() => { router.push("/(budget)/predict-budget") }}
           >
-            <Text className='text-primary text-sm font-pmedium'>
-              See predicted budget
-            </Text>
+            <View className="flex-row items-center justify-center gap-2">
+              <Text className='text-white text-lg font-pmedium'>
+                AI Budget Insights
+              </Text>
+              <Text className="text-white text-2xl">🤖</Text>
+            </View>
           </TouchableOpacity>
           </View>
         </View>

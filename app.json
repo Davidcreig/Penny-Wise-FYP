@@ -9,14 +9,19 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.david.pennywise",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/outside-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.david.pennywise"
+      "package": "com.david.pennywise",
+      "permissions": ["NOTIFICATIONS"]
     },
     "web": {
       "bundler": "metro",
@@ -56,6 +61,13 @@
           "cameraPermission": "Allow $(Penny-Wise-FYP) to access your camera",
           "microphonePermission": "Allow $(Penny-Wise-FYP) to access your microphone",
           "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/outside-icon.png",
+          "color": "#76CE96",
         }
       ]
     ],

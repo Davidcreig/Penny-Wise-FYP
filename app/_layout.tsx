@@ -3,6 +3,7 @@ import "./globals.css";
 import {useFonts} from "expo-font";
 import { useEffect } from "react";
 import GlobalProvider from "../context/GlobalProvider";
+import { registerForPushNotificationsAsync } from "../lib/notifications";
 
 export default function RootLayout() {
   const[fontsLoaded] = useFonts({
@@ -22,6 +23,11 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   },[fontsLoaded]);
+
+  useEffect(() => {
+    // Register for push notifications
+    registerForPushNotificationsAsync();
+  }, []);
 
   if(!fontsLoaded) return null;
   

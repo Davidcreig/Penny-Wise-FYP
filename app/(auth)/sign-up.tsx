@@ -3,15 +3,32 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '../../constants'
 import { Link, router } from 'expo-router'
-import {createUser} from '../../lib/appwrite'
+import {createUser, googlelogin} from '../../lib/appwrite'
+
 
 
 const SignUp = () => {
-
+    
     const [showPassword, setShowPassword] = useState(true)
     const [repeatedPass, setRepeatedPass] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
-
+    
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await googlelogin();
+            console.log('Google login result:', result)
+            if(result){
+                console.log('Login successful, navigating to budget page')
+                router.replace('/(tabs)/budget')
+            } else {
+                console.log('Login failed, showing error alert')
+                Alert.alert('Error', 'Failed to login with Google')
+            }
+        } catch (error) {
+            console.error('Error in handleGoogleLogin:', error)
+            Alert.alert('Error', 'An unexpected error occurred')
+        }
+    }
 
     const [form, setForm] = useState({
             username : "",
@@ -41,7 +58,7 @@ const SignUp = () => {
             console.log('hi')
             //set global state 
 
-            router.replace('/(registration)/reg-budget')
+            router.replace('/(registration)/GDPR')
         } catch (error) {
             console.log(error)
         }
@@ -91,7 +108,8 @@ const SignUp = () => {
                         <Text className='text-primary text-xl font-pmedium'>Sign up </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                    // onPress={()=>router.push("/(tabs)/budget")}
+                    onPress={handleGoogleLogin}
+                    activeOpacity={0.7}
                     className="bg-primary border border-gray-200 w-[90%] items-center gap-4 justify-center flex-row h-16 rounded-full"
                     >
                         <Image

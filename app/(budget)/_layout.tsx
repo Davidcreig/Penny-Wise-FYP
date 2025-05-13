@@ -10,6 +10,7 @@ const budgetLayout = () => {
         <Stack.Screen name = "predict-budget" options={{headerShown: false}}/>
         <Stack.Screen name = "enter-expense" options={{headerShown: false}}/>
         <Stack.Screen name = "edit-expenses" options={{headerShown: false}}/>
+        <Stack.Screen name = "literature" options={{headerShown: false}}/>
     </Stack>
     <StatusBar backgroundColor={"#FFFAFA"}/>
     </>

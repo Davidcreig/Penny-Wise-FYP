@@ -1,62 +1,69 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import PieChart from "react-native-pie-chart"
-import { router } from 'expo-router'
+import { BarChart } from 'react-native-chart-kit'
+import { Dimensions } from 'react-native'
+
+type Category = 'Rent/Utilities' | 'Groceries' | 'Transport' | 'Restaurants' | 'Entertainment' | 'Shopping' | 'Subscription/Services' | 'Other';
 
 const predBudget = () => {
+  const categories: Category[] = [
+    'Rent/Utilities',
+    'Groceries',
+    'Transport',
+    'Restaurants',
+    'Entertainment',
+    'Shopping',
+    'Subscription/Services',
+    'Other'
+  ];
+  const daysOfMonth = Array.from({ length: 30 }, (_, i) => (i + 1).toString()); // Days 1-30
 
-  const enterExpense = async () => {
-
+  const mockData: Record<Category, number[]> = {
+    'Rent/Utilities': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 400), // Random data between 400-500
+    'Groceries': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 200), // Random data between 200-300
+    'Transport': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 100), // Random data between 100-200
+    'Restaurants': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 150), // Random data between 150-250
+    'Entertainment': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 50), // Random data between 50-150
+    'Shopping': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 100), // Random data between 100-200
+    'Subscription/Services': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 50), // Random data between 50-150
+    'Other': Array.from({ length: 30 }, () => Math.floor(Math.random() * 100) + 50), // Random data between 50-150
   };
 
-  const widthAndHeight = 250
-
-    const data = [
-      { value: 200, color: '#f4b800', label: { text: '45%',fontSize: 15, fontWeight: 'bold' } },
-      { value: 160, color: '#76CE96', label: { text: '33%',fontSize: 15,fontWeight: 'bold' } },
-      { value: 500, color: '#437BD1', label: { text: '22%', fontSize: 15,fontWeight: 'bold' } },
-      { value: 140, color: '#E64736', label: { text: '5%', fontSize: 15,fontWeight: 'bold' } },
-    ]
+  const renderBarChart = (category: Category, data: number[]) => (
+    <View key={category} className='mb-4'>
+      <Text className='text-black font-psemibold text-xl mb-2'>{category}</Text>
+      <BarChart
+        data={{
+          labels: daysOfMonth,
+          datasets: [{ data }],
+        }}
+        width={Dimensions.get('window').width - 40}
+        height={220}
+        yAxisLabel="£"
+        yAxisSuffix=""
+        chartConfig={{
+          backgroundGradientFrom: "#FFFAFA",
+          backgroundGradientTo: "#FFFAFA",
+          color: (opacity = 1) => `rgba(118, 206, 150, ${opacity})`,
+          decimalPlaces: 0,
+          barPercentage: 0.5, // This controls the width of the bars
+        }}
+        style={{ marginVertical: 2, borderRadius: 16 }}
+      />
+    </View>
+  );
 
   return (
     <SafeAreaView className='bg-white h-full'>
-      <View className='gap-5 items-center'>
-        <Text className='text-black font-psemibold text-4xl mt-6'>Monthly Budget</Text>
-        <Text className='text-secondary font-psemibold text-4xl'>£1300</Text>
-        <View className='justify-center items-center'>
-          <Text className='font-pmedium text-gray justify-center absolute items-center text-4xl'>531.11</Text>
-        <PieChart widthAndHeight={widthAndHeight} series={data} cover={0.65} padAngle={0.015}/>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View className='gap-5 items-center'>
+          <Text className='text-black font-psemibold text-4xl mt-6'>Predicted Expenses (ML)</Text>
+          {categories.map((category) => renderBarChart(category, mockData[category]))}
         </View>
-        <View className=' flex-grow gap-3  justify-center items-center'>
-          <View className='font-pbold'>
-            <Text className='font-pmedium'>Rent</Text>
-          </View>
-          <View>
-            <Text className='font-pmedium'>Groceries</Text>
-          </View>
-          <View>
-            <Text className='font-pmedium'>Transport</Text>
-          </View>
-          <View>
-            <Text className='font-pmedium'>Others</Text>
-          </View>
-          <TouchableOpacity className='bg-gray-100  w-[150px] h-[10%] justify-center items-center rounded-xl' activeOpacity={0.7}
-          >
-          <Text className='text-primary text-sm font-pmedium'>
-            See predicted budget
-          </Text>
-        </TouchableOpacity>
-        </View>
-        <TouchableOpacity className='bg-secondary w-[80%] h-[10%] justify-center items-center rounded-xl' activeOpacity={0.7}>
-          <Text className='text-primary text-xl font-pmedium'>
-            Enter expense Manually
-          </Text>
-
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default predBudget
+export default predBudget;

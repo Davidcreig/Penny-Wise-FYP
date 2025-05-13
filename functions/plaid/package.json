@@ -1,0 +1,8 @@
+{
+    "name": "plaid-function",
+    "version": "1.0.0",
+    "dependencies": {
+      "node-appwrite": "^9.0.0",
+      "plaid": "^21.0.0"
+    }
+  }

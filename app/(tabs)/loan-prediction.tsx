@@ -35,7 +35,7 @@ const calculateRepayments = (
   let balance = initialDebt;
   let salary = income;
   const repayments: Repayment[] = [];
-  const salaryGrowth = 0.02;
+  const salaryGrowth = 0.03;
 
   for (let year = 0; year <= Math.min(years, writeOff); year++) {
     const annualRepayment = Math.max((salary - threshold) * rate, 0);

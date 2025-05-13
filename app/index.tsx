@@ -1,16 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Link, Redirect, router } from 'expo-router';
 import{SafeAreaView} from 'react-native-safe-area-context'
 import{images} from '../constants';
 import { useEffect } from 'react';
 import { useGLobalContext } from '@/context/GlobalProvider';
+import { googlelogin } from '@/lib/appwrite';
 
 
  export default function App() {
     const {isLoading, isLoggedIn} = useGLobalContext();
     if(!isLoading && isLoggedIn) return <Redirect href="/budget"/>
-  
+ 
+    const handleGoogleLogin = async () => {
+          try {
+              const result = await googlelogin();
+              console.log('Google login result:', result)
+              if(result){
+                  console.log('Login successful, navigating to budget page')
+                  router.replace('/(tabs)/budget')
+              } else {
+                  console.log('Login failed, showing error alert')
+                  Alert.alert('Error', 'Failed to login with Google')
+              }
+          } catch (error) {
+              console.error('Error in handleGoogleLogin:', error)
+              Alert.alert('Error', 'An unexpected error occurred')
+          }
+      }
 
   return (
     <SafeAreaView className="bg-secondary w-full h-full">
@@ -42,7 +59,7 @@ import { useGLobalContext } from '@/context/GlobalProvider';
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // onPress={()=>router.push("/(tabs)/budget")}
+              onPress={handleGoogleLogin}
               className="bg-primary items-center gap-4 justify-center flex-row h-16 w-[80%] rounded-full"
             >
               <Image
