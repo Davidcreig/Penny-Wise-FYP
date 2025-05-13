@@ -29,7 +29,7 @@ const RegBudget = () => {
     setIsSubmitting(true);
 
     try {
-      await newIncome(parseFloat(income)); // Assuming `newIncome` accepts startDay as a parameter
+      await newIncome(parseFloat(income)); // start day is not implemented, but is a good feature for future implementation
       router.replace('/(registration)/reg-loan');
     } catch (error) {
       console.error(error);

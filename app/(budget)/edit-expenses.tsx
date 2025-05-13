@@ -2,7 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { getBudgetData, deleteExpense, updateSpentData } from '@/lib/appwrite'; // Import updateSpentData
+import { getBudgetData, deleteExpense, updateSpentData } from '@/lib/appwrite'; 
 import useAppwrite from '@/lib/useAppwrite';
 
 const EditExpenses = () => {

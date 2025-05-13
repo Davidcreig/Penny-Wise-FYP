@@ -30,7 +30,7 @@ export default function RootLayout() {
   }, []);
 
   if(!fontsLoaded) return null;
-  
+  //Global provider keeps session and user data in context
   return (
     <GlobalProvider>
       <Stack> 

@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 
 const RegPlaid = () => {
   const handleConnect = () => {
-    // Add your Plaid connection logic here
+    // Add your Plaid connection logic here from plaid-connect.tsx
     console.log('Connect to Plaid button pressed');
   };
 

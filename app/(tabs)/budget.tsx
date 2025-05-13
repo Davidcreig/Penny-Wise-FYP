@@ -58,7 +58,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
    const value = totals?.[category] || 0; // Get the value for the category or default to 0
    const percentage = totalSum > 0 ? (value / totalSum) * 100 : 0; // Calculate percentage
    return {
-     value: percentage * 10, // Scale percentage to 0-1000 range
+     value: percentage * 10, // Scale percentage to 0-1000 range for pie chart
      color: getCategoryColor(category), // Assign a color based on the category
      label: {
        text: percentage < 5 ? "" : `${percentage.toFixed(0)}%`, // Conditional text for labels // Format percentage with 1 decimal place
@@ -69,7 +69,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
  });
 
  const isDataValid = totalSum > 0;
-
+//Not being used
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     console.log(budgetInfo.expenses.length)
@@ -142,7 +142,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
               onPress={() => router.push('/(budget)/literature')}
               className="bg-secondary p-2 rounded-full"
             >
-              <Text className="font-psemibold text-primary px-2 text-sm font-pmedium">i</Text>
+              <Text className="font-psemibold text-primary px-2 text-sm">i</Text>
             </TouchableOpacity>
           </View>
           <View className='border-2 border-secondary-50 rounded-xl gap-1'>
@@ -186,7 +186,7 @@ const totalSum = Object.values(totals || {}).reduce((sum, value) => sum + value,
           <View className='gap-3 mt-3 w-full items-center justify-center'>
           <TouchableOpacity
             onPress={() => { router.push({
-              pathname: '/(budget)/enter-expense',
+              pathname: '/(budget)/enter-expense',//send parameters to the page
               params: {
                 budgetId: budgetInfo?.$id,
                 amountSpent: budgetInfo?.amountSpent,

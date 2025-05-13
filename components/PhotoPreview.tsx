@@ -87,7 +87,7 @@ const PhotoPreview = ({ photo, handleRetakePhoto }: { photo: CameraCapturedPictu
     handleRetakePhoto();
   }
 };
- // if (ocrData) return <Ocrdata data={ocrData} handleRetakePhoto={handleRetakePhoto} />;
+ 
   return (
     <SafeAreaView className='h-full items-center bg-primary'>
       <Text className='font-psemibold mt-6 text-3xl'>OCR Receipt Scanning</Text>

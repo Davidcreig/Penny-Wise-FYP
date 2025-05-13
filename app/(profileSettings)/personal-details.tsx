@@ -14,34 +14,11 @@ const personalDetails = () => {
 
   // States for form fields
   const [form, setForm] = useState({
-    name: 'John Doe', // Replace with actual user data
-    email: 'johndoe@example.com', // Replace with actual user data
+    name: 'John', 
+    email: 'john@example.com', 
     oldPassword: '',
     newPassword: '',
   });
-
-
-  // const handlePasswordChange = async () => {
-  //   if (!form.oldPassword || !form.newPassword) {
-  //     Alert.alert('Error', 'Please fill in all password fields.');
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     // Call the function to update the password
-  //     await updatePassword(form.oldPassword, form.newPassword);
-
-  //     Alert.alert('Success', 'Password updated successfully!');
-  //     setForm({ ...form, oldPassword: '', newPassword: '' }); // Clear password fields
-  //   } catch (error) {
-  //     console.error(error);
-  //     Alert.alert('Error', 'Failed to update password.');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   
     useEffect(() => {

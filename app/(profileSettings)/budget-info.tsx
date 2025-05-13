@@ -23,7 +23,6 @@ const budgetInfo = () => {
 
               await newIncome(parseFloat(form.income));
   
-              //set global state
               Alert.alert('Success', 'Income set successfully')
               router.replace('/(tabs)/budget')
   
@@ -42,9 +41,6 @@ const budgetInfo = () => {
         <View className='w-full  items-center'>
           <TextInput value={form.income} onChangeText={(e)=>setForm({ ...form, income: e})} className='bg-primary font-pmedium border-2 w-[80%] p-5 border-secondary-50 focus:border-secondary rounded-xl' placeholderTextColor={"#9fdcb5"} placeholder='Income'/>
         </View>
-        {/* <View className='w-full  items-center'>
-          <TextInput value={form.budget} onChangeText={(e)=>setForm({ ...form, income: e})} className='bg-primary font-pmedium border-2 w-[90%] p-5 border-secondary-50 focus:border-secondary rounded-full' placeholderTextColor={"#9fdcb5"} placeholder='Income'/>
-        </View> */}
         <TouchableOpacity  onPress={submit} className='w-[80%] rounded-xl p-4  bg-secondary items-center'>
           <Text className='text-primary text-xl font-pmedium'>Set new income amount </Text>
         </TouchableOpacity>

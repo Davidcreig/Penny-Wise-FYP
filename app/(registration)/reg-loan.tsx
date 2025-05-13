@@ -2,7 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, P
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { updateLoanInfo } from '@/lib/appwrite'; // Replace with the actual function to save loan data
+import { updateLoanInfo } from '@/lib/appwrite';
 
 const RegLoan = () => {
   const [form, setForm] = useState({
@@ -36,9 +36,9 @@ const RegLoan = () => {
     setIsSubmitting(true);
 
     try {
-      await updateLoanInfo(expectedSalaryFloat, loanBalanceFloat, loanPlan); // Assuming this function saves the loan data
+      await updateLoanInfo(expectedSalaryFloat, loanBalanceFloat, loanPlan); 
       Alert.alert('Success', 'Loan information saved successfully!');
-      router.replace('/(registration)/reg-plaid'); // Redirect to the loan prediction page
+      router.replace('/(registration)/reg-plaid'); 
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to save loan information.');

@@ -17,7 +17,7 @@ const scanReceipts = () => {
     return <View />;
   }
 
-  if (!permission.granted) { //could avoid platform
+  if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
       <SafeAreaView className='h-full'>

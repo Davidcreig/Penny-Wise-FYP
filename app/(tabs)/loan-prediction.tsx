@@ -30,28 +30,30 @@ const calculateRepayments = (
     "5": { threshold: 25000, rate: 0.09, writeOff: 40, interest: 0.043 },
   };
 
-  const { threshold, rate, writeOff, interest } = plans[plan];
+const { threshold, rate, writeOff, interest } = plans[plan]; // Destructure the loan plan details (threshold, rate, write-off period, and interest rate)
 
-  let balance = initialDebt;
-  let salary = income;
-  const repayments: Repayment[] = [];
-  const salaryGrowth = 0.03;
+  let balance = initialDebt; // Initialize the loan balance with the initial debt
+  let salary = income; // Initialize the salary with the provided income
+  const repayments: Repayment[] = []; // Array to store repayment details for each year
+  const salaryGrowth = 0.03; // Assume a 3% annual salary growth rate
 
+  // Loop through each year up to the minimum of the specified years or the write-off period
   for (let year = 0; year <= Math.min(years, writeOff); year++) {
-    const annualRepayment = Math.max((salary - threshold) * rate, 0);
-    balance = balance * (1 + interest) - annualRepayment;
+    const annualRepayment = Math.max((salary - threshold) * rate, 0); // Calculate the annual repayment based on the salary exceeding the threshold
+    balance = balance * (1 + interest) - annualRepayment; // Update the loan balance by adding interest and subtracting the annual repayment
 
+    // If the balance is fully paid off or invalid, stop the loop
     if (balance <= 0 || isNaN(balance) || !isFinite(balance)) {
-      balance = Math.max(balance, 0);
-      repayments.push({ year, balance, annualRepayment });
-      break;
+      balance = Math.max(balance, 0); // Ensure the balance does not go below zero
+      repayments.push({ year, balance, annualRepayment }); // Add the final repayment details
+      break; // Exit the loop
     }
 
-    repayments.push({ year, balance, annualRepayment });
-    salary *= 1 + salaryGrowth;
+    repayments.push({ year, balance, annualRepayment }); // Add the repayment details for the current year
+    salary *= 1 + salaryGrowth; // Increase the salary by the annual growth rate
   }
 
-  return repayments;
+  return repayments; // Return the array of repayment details
 };
 
 // Student Loan Repayment Chart Component
