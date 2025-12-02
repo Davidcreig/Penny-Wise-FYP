@@ -24,6 +24,7 @@
 1. 🤖 [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
+4. 🔗 [Gallery](#gallery)
 ## <a name="introduction">🤖 Introduction</a>
 My student budgeting application is designed to simplify financial management for UK students by combining intelligent automation with an intuitive interface. The app features OCR receipt scanning powered by Asprise API to instantly capture and categorize purchases, a student loan repayment prediction tool that helps users understand long term financial commitments, and a streamlined expense tracking system that makes it easy to monitor daily spending. Alongside these core tools, the app also offers additional features that enhance financial awareness and make managing money easier, more accurate, and more convenient for students.
 
@@ -58,7 +59,5 @@ My student budgeting application is designed to simplify financial management fo
 …and many more features, including clean code architecture, component reusability, and a smooth, student friendly user experience.
 
 ## <a name="gallery">🔗 Gallery</a>
-<a>
-  <img src="https://files.catbox.moe/501tny.png" alt="screenshots">
-</a>
+<img width="4518" height="4650" alt="example screenshots" src="https://github.com/user-attachments/assets/3745b3cf-79a7-497e-9fbe-7bdc047b797b" />
 
