@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   </div>
 
-  <h3 align="center">UK Students Budgeting App</h3>
+  <h3 align="center">UK Students Budgeting IOS & Android App </h3>
 
    <div align="center">
      Final year project full-stack app by David Daniel Rodriguez Creighton
