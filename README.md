@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <br />
+    <a>
+      <img src="assets/images/icon.png" alt="Project Logo" height="170" width="150">
+       <h1 align="center">Penny-Wise</h1>
+    </a>
+  <br />
+  <div>
+    <img src="https://img.shields.io/badge/-Expo-black?style=for-the-badge&logoColor=white&logo=expo&color=000020" alt="expo" />
+    <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
+    <img src="https://img.shields.io/badge/-Appwrite-black?style=for-the-badge&logoColor=white&logo=appwrite&color=FD366E" alt="appwrite" />
+    <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
+  </div>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+  <h3 align="center">UK Students Budgeting IOS & Android App </h3>
+<h4 align="center">Grade: 78% Nominated for FYP Awards </h4>
+   <div align="center">
+     Final year project full-stack app by David Daniel Rodriguez Creighton
+    </div>
+</div>
 
-## Get started
+## 📋 <a name="table">Table of Contents</a>
 
-1. Install dependencies
+1. 🤖 [Introduction](#introduction)
+2. ⚙️ [Tech Stack](#tech-stack)
+3. 🔋 [Features](#features)
+4. 🔗 [Gallery](#gallery)
+## <a name="introduction">🤖 Introduction</a>
+My student budgeting application is designed to simplify financial management for UK students by combining intelligent automation with an intuitive interface. The app features OCR receipt scanning powered by Asprise API to instantly capture and categorize purchases, a student loan repayment prediction tool that helps users understand long term financial commitments, and a streamlined expense tracking system that makes it easy to monitor daily spending. Alongside these core tools, the app also offers additional features that enhance financial awareness and make managing money easier, more accurate, and more convenient for students.
 
-   ```bash
-   npm install
-   ```
+## <a name="tech-stack">⚙️ Tech Stack</a>
 
-2. Start the app
+- **[Expo](https://expo.dev/)** is an open-source platform for building universal native apps (Android, iOS, web) using JavaScript/TypeScript and React Native. It features file-based routing via Expo Router, fast refresh, native modules for camera/maps/notifications, over-the-air updates (EAS), and streamlined app deployment.
 
-   ```bash
-    npx expo start
-   ```
+- **[React Native](https://reactnative.dev/)** is a framework for building mobile UIs with React. It enables component‑based, cross-platform development with declarative UI, deep native API support, and is tightly integrated with Expo for navigation and native capabilities.
 
-In the output, you'll find options to open the app in a
+- **[Appwrite](https://jsm.dev/rn25-appwrite)** is an open-source backend-as-a-service platform offering secure authentication (email/password, OAuth, SMS, magic links), databases, file storage with compression/encryption, real-time messaging, serverless functions, and static site hosting via Appwrite Sites—all managed through a unified console and microservices architecture.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **[TypeScript](https://www.typescriptlang.org/)** is a statically-typed superset of JavaScript providing type annotations, interfaces, enums, generics, and enhanced tooling. It improves error detection, code quality, and scalability—ideal for robust, maintainable projects.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **[NativeWind](https://www.nativewind.dev/)** brings Tailwind CSS to React Native and Expo, allowing you to style mobile components using utility-first classes for fast, consistent, and responsive UI design.
 
-## Get a fresh project
+- **[Tailwind CSS](https://tailwindcss.com/)** is a utility-first CSS framework enabling rapid UI design via low-level classes. In React Native/Expo, it’s commonly used with NativeWind to apply Tailwind-style utilities to mobile components.
 
-When you're ready, run:
+- **[Asprise API](https://asprise.com/receipt-ocr/blog-GB-uk-receipt-ocr)** is a fast, lightweight optical character recognition solution used to scan receipts and extract structured data. In my app, it processes receipt images to automatically identify and return key details such as store names, dates, and totals.
 
-```bash
-npm run reset-project
-```
+## <a name="features">🔋 Features</a>
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+👉 **Authentication with Google**: Apart from simple email registration, the app also offers secure and effortless sign-in for students using Google’s authentication service.
 
-## Learn more
+👉 **Home Page**: Presents a clear overview of recent expenses, budget summaries, and smart financial insights.
 
-To learn more about developing your project with Expo, look at the following resources:
+👉 **OCR Receipt Scanning**: Uses the Asprise API to scan and extract data from receipts instantly for automatic expense entry.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+👉 **Loan Prediction Tool**: Provides student loan repayment estimates to help users understand future financial commitments.
 
-## Join the community
+👉 **Profile Page**: Allows users to customize personal settings, budgeting preferences, and financial goals.
 
-Join our community of developers creating universal apps.
+…and many more features, including clean code architecture, component reusability, and a smooth, student friendly user experience.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## <a name="gallery">🔗 Gallery</a>
+<img width="4518" height="4650" alt="example screenshots" src="https://github.com/user-attachments/assets/3745b3cf-79a7-497e-9fbe-7bdc047b797b" />
+
